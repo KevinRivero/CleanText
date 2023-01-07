@@ -1,5 +1,7 @@
 package com.cleanText.editor;
 
+import jdk.jshell.execution.Util;
+
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.undo.UndoManager;
@@ -13,6 +15,8 @@ public class Panel extends JPanel {
   // ---------- Variables para el area de texto -----------
   private JTabbedPane tPane;
   private JPanel ventana;
+  private ArrayList<NumeroLinea> enumeraciones;
+  private boolean numeracion = true;
   // se crean ArrayList porque vamos a poder tener varias pestanias y archivos
   private ArrayList<JTextPane> listaTexto;
   private ArrayList<JScrollPane> listaScroll;
@@ -33,6 +37,7 @@ public class Panel extends JPanel {
     listaTexto = new ArrayList<JTextPane>();
     listaScroll = new ArrayList<JScrollPane>();
     listaManager = new ArrayList<UndoManager>();
+    enumeraciones = new ArrayList<NumeroLinea>();
 
     // se inicializan las variables para el menu
     menu = new JMenuBar();
@@ -76,6 +81,9 @@ public class Panel extends JPanel {
     listaTexto.add(new JTextPane());
     listaScroll.add(new JScrollPane(listaTexto.get(contadorPanel))); // se agrega el area de texto al scroll
     listaArchivos.add(new File(""));
+
+    enumeraciones.add(new NumeroLinea(listaTexto.get(contadorPanel)));
+    Utilidades.numerarLineas(numeracion, enumeraciones.get(contadorPanel), listaScroll.get(contadorPanel));
 
     listaManager.add(new UndoManager());
     listaTexto.get(contadorPanel).getDocument().addUndoableEditListener(listaManager.get(contadorPanel));
@@ -160,8 +168,10 @@ public class Panel extends JPanel {
                 listaManager.remove(tPane.getTabCount() - 1);
                 listaTexto.remove(tPane.getTabCount() - 1);
                 listaScroll.remove(tPane.getTabCount() - 1);
-                tPane.remove(tPane.getTabCount() - 1);
                 listaArchivos.remove(tPane.getTabCount() - 1);
+                tPane.remove(tPane.getTabCount() - 1);
+
+
                 contadorPanel--;
               }
             }
@@ -290,6 +300,19 @@ public class Panel extends JPanel {
               listaTexto.get(tPane.getSelectedIndex()).selectAll();
             }
           });
+        }
+        break;
+      case "ver":
+        ver.add(item);
+        if (accion.equals("numeracion")) {
+          item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              numeracion = !numeracion;
+              Utilidades.numerarLineas(numeracion, enumeraciones.get(tPane.getSelectedIndex()), listaScroll.get(tPane.getSelectedIndex()));
+            }
+          });
+
         }
     }
   }

@@ -199,7 +199,47 @@ public class Panel extends JPanel {
               }
             }
           });
+        }else if(accion.equals("guardar como")){
+          item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              if (listaArchivos.get(tPane.getSelectedIndex()).getPath().equals("")) {
+                JFileChooser guardarArchivo = new JFileChooser();
+                int opcion = guardarArchivo.showOpenDialog(null);
+                if (opcion == JFileChooser.APPROVE_OPTION) {
+                  File archivo = guardarArchivo.getSelectedFile();
+                  listaArchivos.set(tPane.getSelectedIndex(), archivo);
+                  tPane.setTitleAt(tPane.getSelectedIndex(), archivo.getName());
+                  try {
+                    FileWriter fw = new FileWriter(listaArchivos.get(tPane.getSelectedIndex()).getPath());
+                    String texto = listaTexto.get(tPane.getSelectedIndex()).getText();
+                    for (int i = 0; i < texto.length(); i++) {
+                      fw.write(texto.charAt(i));
+                    }
+                    fw.close();
 
+
+                  } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                  }
+
+                }
+              }else{
+                try {
+                  FileWriter fw = new FileWriter(listaArchivos.get(tPane.getSelectedIndex()).getPath());
+                  String texto = listaTexto.get(tPane.getSelectedIndex()).getText();
+                  for (int i = 0; i < texto.length(); i++) {
+                    fw.write(texto.charAt(i));
+                  }
+                  fw.close();
+
+
+                } catch (IOException ex) {
+                  throw new RuntimeException(ex);
+                }
+              }
+            }
+          });
         }
     }
   }

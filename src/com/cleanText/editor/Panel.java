@@ -62,7 +62,7 @@ public class Panel extends JPanel {
     crearItem("Copiar", "editar", "copiar");
     crearItem("Cortar", "editar", "cortar");
     crearItem("Pegar", "editar", "pegar");
-    crearItem("Seleccion todo", "seleccion", "seleccionar todo");
+    crearItem("Seleccionar todo", "seleccion", "seleccionar todo");
     crearItem("Numeracion", "ver", "numeracion");
     crearItem("Normal", "apariencia", "normal");
     crearItem("Oscuro", "apariencia", "oscuro");
@@ -278,6 +278,18 @@ public class Panel extends JPanel {
           item.addActionListener(new DefaultEditorKit.CutAction());
         } else if (accion.equals("pegar")) {
           item.addActionListener(new DefaultEditorKit.PasteAction());
+        }
+        break;
+      case "seleccion": // BUG: cuando no tengo seleccionada el area de texto, osea tengo seleccionada la pestania, no funciona el seleccionar todo, tengo que primero posicionarme sobre el area de texto y luego ahi funciona.
+        // NO ES UN BUG CRITICO NI IMPORTANTE, solucionar luego
+        seleccion.add(item);
+        if (accion.equals("seleccionar todo")) {
+          item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              listaTexto.get(tPane.getSelectedIndex()).selectAll();
+            }
+          });
         }
     }
   }

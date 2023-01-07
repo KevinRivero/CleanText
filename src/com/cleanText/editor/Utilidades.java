@@ -1,8 +1,10 @@
 package com.cleanText.editor;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+import javax.swing.text.*;
+import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Utilidades {
 
@@ -26,4 +28,33 @@ public class Utilidades {
     }
   }
 
+  public static void cambiarApariencia(String tipo, ArrayList<JTextPane> lista) {
+    if (tipo.equals("normal")) {
+      for (JTextPane texto : lista) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        // cambiar color de texto
+        AttributeSet estilos = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.BLACK);
+        // cambiar tamanio de fuente
+        estilos = sc.addAttribute(estilos, StyleConstants.FontSize, 14);
+        // cambiar tipo de fuente
+        estilos = sc.addAttribute(estilos, StyleConstants.FontFamily, "Arial");
+
+        texto.setCharacterAttributes(estilos, false); // se aplican los cambios guardados en estilos a los caracteres del texto
+        texto.setBackground(Color.white);
+      }
+    } else if (tipo.equals("oscuro")) {
+      for (JTextPane texto : lista) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        // cambiar color de texto
+        AttributeSet estilos = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.ORANGE);
+        // cambiar tamanio de fuente
+        estilos = sc.addAttribute(estilos, StyleConstants.FontSize, 14);
+        // cambiar tipo de fuente
+        estilos = sc.addAttribute(estilos, StyleConstants.FontFamily, "Arial");
+
+        texto.setCharacterAttributes(estilos, false); // se aplican los cambios guardados en estilos a los caracteres del texto
+        texto.setBackground(Color.DARK_GRAY);
+      }
+    }
+  }
 }

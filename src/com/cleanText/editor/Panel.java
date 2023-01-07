@@ -314,6 +314,16 @@ public class Panel extends JPanel {
           });
 
         }
+      case "apariencia":
+        aparariencia.add(item);
+        if (accion.equals("normal")) {
+          item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              
+            }
+          });
+        }
     }
   }
 }

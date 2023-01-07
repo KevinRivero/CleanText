@@ -90,9 +90,13 @@ public class Panel extends JPanel {
     ventana.add(listaScroll.get(contadorPanel)); // se agrega el scroll (que ya tiene al area de texto dentro) a la ventana
     tPane.addTab("Pestaña " + (contadorPanel + 1), ventana);
     tPane.setSelectedIndex(contadorPanel); // se hace para que una vez que se cree una nueva area de texto, quede seleccionada
+
+
+    listaTexto.get(contadorPanel).selectAll();
+    Utilidades.cambiarApariencia("normal", listaTexto);
+
+
     contadorPanel++;
-
-
   }
 
 
@@ -312,15 +316,25 @@ public class Panel extends JPanel {
               Utilidades.numerarLineas(numeracion, enumeraciones.get(tPane.getSelectedIndex()), listaScroll.get(tPane.getSelectedIndex()));
             }
           });
-
+          break;
         }
-      case "apariencia":
+      case "apariencia": // BUG IMPORTANTE : Cuando tengo mas de una pestania abierta y cambio de apariencia, en la que no tengo seleccionada se cambia el fondo pero no cambian los otros
+        // aplicados a la fuente. SOLUCIONAR PRIMERO
         aparariencia.add(item);
         if (accion.equals("normal")) {
           item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              
+              listaTexto.get(tPane.getSelectedIndex()).selectAll();
+              Utilidades.cambiarApariencia("normal", listaTexto);
+            }
+          });
+        } else if (accion.equals("oscuro")) {
+          item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              listaTexto.get(tPane.getSelectedIndex()).selectAll();
+              Utilidades.cambiarApariencia("oscuro", listaTexto);
             }
           });
         }

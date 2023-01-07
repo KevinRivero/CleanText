@@ -46,7 +46,7 @@ public class Utilidades {
       for (JTextPane texto : lista) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         // cambiar color de texto
-        AttributeSet estilos = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.ORANGE);
+        AttributeSet estilos = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.lightGray);
         // cambiar tamanio de fuente
         estilos = sc.addAttribute(estilos, StyleConstants.FontSize, 14);
         // cambiar tipo de fuente

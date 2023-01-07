@@ -1,11 +1,13 @@
 package com.cleanText.editor;
 
 import javax.swing.*;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.undo.UndoManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
+
 
 public class Panel extends JPanel {
   // ---------- Variables para el area de texto -----------
@@ -270,6 +272,12 @@ public class Panel extends JPanel {
               }
             }
           });
+        } else if (accion.equals("copiar")) {
+          item.addActionListener(new DefaultEditorKit.CopyAction());
+        } else if (accion.equals("cortar")) {
+          item.addActionListener(new DefaultEditorKit.CutAction());
+        } else if (accion.equals("pegar")) {
+          item.addActionListener(new DefaultEditorKit.PasteAction());
         }
     }
   }

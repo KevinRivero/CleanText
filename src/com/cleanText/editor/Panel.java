@@ -1,6 +1,7 @@
 package com.cleanText.editor;
 
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -13,6 +14,8 @@ public class Panel extends JPanel {
   // se crean ArrayList porque vamos a poder tener varias pestanias y archivos
   private ArrayList<JTextPane> listaTexto;
   private ArrayList<JScrollPane> listaScroll;
+  private ArrayList<UndoManager> listaManager; // este array contiene clases de seguimiento que se van a acoplar con las areas de texto, para que tengan registrados los cambios que vamos haciendo y asi poder
+  // utilizar comandos como deshacer y rehacer, entre otros.
   private int contadorPanel = 0; // se crea un contador para sumar cuantas "ventanas" vamos creando
   //------------------- Variables para el menu -------------------
   private JMenuBar menu;
@@ -27,6 +30,7 @@ public class Panel extends JPanel {
     tPane = new JTabbedPane();
     listaTexto = new ArrayList<JTextPane>();
     listaScroll = new ArrayList<JScrollPane>();
+    listaManager = new ArrayList<UndoManager>();
 
     // se inicializan las variables para el menu
     menu = new JMenuBar();
@@ -71,6 +75,8 @@ public class Panel extends JPanel {
     listaScroll.add(new JScrollPane(listaTexto.get(contadorPanel))); // se agrega el area de texto al scroll
     listaArchivos.add(new File(""));
 
+    listaManager.add(new UndoManager());
+    listaTexto.get(contadorPanel).getDocument().addUndoableEditListener(listaManager.get(contadorPanel));
     ventana.add(listaScroll.get(contadorPanel)); // se agrega el scroll (que ya tiene al area de texto dentro) a la ventana
     tPane.addTab("Pestaña " + (contadorPanel + 1), ventana);
     tPane.setSelectedIndex(contadorPanel); // se hace para que una vez que se cree una nueva area de texto, quede seleccionada
@@ -134,6 +140,7 @@ public class Panel extends JPanel {
                     for (int i = 0; i < tPane.getTabCount(); i++) {
                       if (listaArchivos.get(i).getPath().equals(f.getPath())) {
                         tPane.setSelectedIndex(i);
+                        listaManager.remove(tPane.getTabCount() - 1);
                         listaTexto.remove(tPane.getTabCount() - 1);
                         listaScroll.remove(tPane.getTabCount() - 1);
                         tPane.remove(tPane.getTabCount() - 1);
@@ -148,6 +155,7 @@ public class Panel extends JPanel {
 
                 }
               } else {
+                listaManager.remove(tPane.getTabCount() - 1);
                 listaTexto.remove(tPane.getTabCount() - 1);
                 listaScroll.remove(tPane.getTabCount() - 1);
                 tPane.remove(tPane.getTabCount() - 1);
@@ -183,7 +191,7 @@ public class Panel extends JPanel {
                   }
 
                 }
-              }else{
+              } else {
                 try {
                   FileWriter fw = new FileWriter(listaArchivos.get(tPane.getSelectedIndex()).getPath());
                   String texto = listaTexto.get(tPane.getSelectedIndex()).getText();
@@ -199,7 +207,7 @@ public class Panel extends JPanel {
               }
             }
           });
-        }else if(accion.equals("guardar como")){
+        } else if (accion.equals("guardar como")) {
           item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -224,7 +232,7 @@ public class Panel extends JPanel {
                   }
 
                 }
-              }else{
+              } else {
                 try {
                   FileWriter fw = new FileWriter(listaArchivos.get(tPane.getSelectedIndex()).getPath());
                   String texto = listaTexto.get(tPane.getSelectedIndex()).getText();
@@ -237,6 +245,28 @@ public class Panel extends JPanel {
                 } catch (IOException ex) {
                   throw new RuntimeException(ex);
                 }
+              }
+            }
+          });
+        }
+        break;
+      case "editar":
+        editar.add(item);
+        if (accion.equals("deshacer")) {
+          item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              if (listaManager.get(tPane.getSelectedIndex()).canUndo()) {
+                listaManager.get(tPane.getSelectedIndex()).undo();
+              }
+            }
+          });
+        } else if (accion.equals("rehacer")) {
+          item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              if (listaManager.get(tPane.getSelectedIndex()).canRedo()) {
+                listaManager.get(tPane.getSelectedIndex()).redo();
               }
             }
           });

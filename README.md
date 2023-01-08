@@ -2,12 +2,13 @@
 Editor de texto
 
 Clean Text es un editor de básico creado sobre todo para practicar mis habilidades en Java.
-La ides es sumarle funcionalidades. 
-Primeramente debe ser capaz de realizar acciones básicas, como:
-      - Generar nuevas pestañas de archivos, abrir creados y guardarlos
-      - Deshaer y reacher, copiar, cortar y pegar
-      - Seleccionar todo el texto de la ventana
-      - Cambiar de modo claro a oscuro
-      - Y alguna mejora en el aspecto del layout
+La idea es sumarle funcionalidades. 
+Las primeras funcionalidades que tiene son:
+      - Menu y submenúes para abrir y guardar archivos
+      - Deshacer y rehacer cambios
+      - Copiar, cortar y pegar elementos
+      - Seleccionar todo el texto de la pantalla
+      - Agregar o quitar numeración de líneas
+      - Cambiar apariencia del editor a modo claro u oscuro
       
       

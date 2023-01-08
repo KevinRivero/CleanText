@@ -5,6 +5,7 @@ import jdk.jshell.execution.Util;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.undo.UndoManager;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -32,6 +33,9 @@ public class Panel extends JPanel {
   private ArrayList<File> listaArchivos;
 
   public Panel() {
+
+    setLayout(new BorderLayout()); // se asigna el tipo de layout al Panel
+
     // se incicializan las variables para el area de texto
     tPane = new JTabbedPane();
     listaTexto = new ArrayList<JTextPane>();
@@ -72,12 +76,14 @@ public class Panel extends JPanel {
     crearItem("Normal", "apariencia", "normal");
     crearItem("Oscuro", "apariencia", "oscuro");
 
-    add(menu);
-    add(tPane); // se agrega al panel principal, que seria el que se crea con el constructor, el contenedor que tiene las areas de texto y se ejecuta la funcion crearPanel
+    add(menu, BorderLayout.NORTH); // se le asigna la posicion en la ventana
+    add(tPane, BorderLayout.CENTER); // se agrega al panel principal, que seria el que se crea con el constructor, el contenedor
+    // que tiene las areas de texto y se ejecuta la funcion crearPanel. Se le asigna la posición en la ventana
   }
 
   public void crearPanel() {
     ventana = new JPanel();
+    ventana.setLayout(new BorderLayout()); // se le asigna el tipo de layout porque es contenedor también de los demas elementos
     listaTexto.add(new JTextPane());
     listaScroll.add(new JScrollPane(listaTexto.get(contadorPanel))); // se agrega el area de texto al scroll
     listaArchivos.add(new File(""));
@@ -87,7 +93,7 @@ public class Panel extends JPanel {
 
     listaManager.add(new UndoManager());
     listaTexto.get(contadorPanel).getDocument().addUndoableEditListener(listaManager.get(contadorPanel));
-    ventana.add(listaScroll.get(contadorPanel)); // se agrega el scroll (que ya tiene al area de texto dentro) a la ventana
+    ventana.add(listaScroll.get(contadorPanel), BorderLayout.CENTER); // se agrega el scroll (que ya tiene al area de texto dentro) a la ventana
     tPane.addTab("Pestaña " + (contadorPanel + 1), ventana);
     tPane.setSelectedIndex(contadorPanel); // se hace para que una vez que se cree una nueva area de texto, quede seleccionada
 

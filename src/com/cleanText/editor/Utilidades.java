@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Utilidades {
@@ -57,4 +58,14 @@ public class Utilidades {
       }
     }
   }
+
+  public static JButton crearBoton(URL url, Object contenedor, String rotulo) {
+    JButton boton = new JButton(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
+    boton.setToolTipText(rotulo);
+    ((Container) contenedor).add(boton);
+    return boton;
+
+
+  }
+
 }

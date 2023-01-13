@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -29,10 +30,16 @@ public class Panel extends JPanel {
   private JMenu archivo, editar, seleccion, ver, aparariencia;
   private JMenuItem item;
 
+  // Variables para la barra de herramientas -------
+  private JToolBar barraHerramientas;
+  private URL url;
+
+
   // ---------------- Variables para archivos
   private ArrayList<File> listaArchivos;
 
   public Panel() {
+
 
     setLayout(new BorderLayout()); // se asigna el tipo de layout al Panel
 
@@ -50,6 +57,7 @@ public class Panel extends JPanel {
     seleccion = new JMenu("Seleccion");
     ver = new JMenu("Ver");
     aparariencia = new JMenu("Apariencia");
+
 
     // se inicializa las variables de archivo
     listaArchivos = new ArrayList<File>();
@@ -76,9 +84,26 @@ public class Panel extends JPanel {
     crearItem("Normal", "apariencia", "normal");
     crearItem("Oscuro", "apariencia", "oscuro");
 
+    // --------- Barra de herramientas---------
+    barraHerramientas = new JToolBar(JToolBar.VERTICAL);
+    // boton Agregar pestania
+    url = Main.class.getResource("/com/cleanText/img/mas.png"); // Toma como referencia relativa la carpeta de la clase principal y de ahi ubicamos la ruta
+    Utilidades.crearBoton(url, barraHerramientas, "Nueva pestaña").addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        crearPanel();
+      }
+    });
+
+
+    add(barraHerramientas, BorderLayout.WEST);
+    //-------------------------
+
     add(menu, BorderLayout.NORTH); // se le asigna la posicion en la ventana
     add(tPane, BorderLayout.CENTER); // se agrega al panel principal, que seria el que se crea con el constructor, el contenedor
     // que tiene las areas de texto y se ejecuta la funcion crearPanel. Se le asigna la posición en la ventana
+
+
   }
 
   public void crearPanel() {

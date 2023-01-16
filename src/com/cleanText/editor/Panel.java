@@ -8,9 +8,11 @@ import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.MissingFormatArgumentException;
 
 
 public class Panel extends JPanel {
@@ -24,6 +26,8 @@ public class Panel extends JPanel {
   private ArrayList<JScrollPane> listaScroll;
   private ArrayList<UndoManager> listaManager; // este array contiene clases de seguimiento que se van a acoplar con las areas de texto, para que tengan registrados los cambios que vamos haciendo y asi poder
   // utilizar comandos como deshacer y rehacer, entre otros.
+
+
   private int contadorPanel = 0; // se crea un contador para sumar cuantas "ventanas" vamos creando
   //------------------- Variables para el menu -------------------
   private JMenuBar menu;
@@ -49,6 +53,7 @@ public class Panel extends JPanel {
     listaScroll = new ArrayList<JScrollPane>();
     listaManager = new ArrayList<UndoManager>();
     enumeraciones = new ArrayList<NumeroLinea>();
+
 
     // se inicializan las variables para el menu
     menu = new JMenuBar();
@@ -92,6 +97,8 @@ public class Panel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         crearPanel();
+
+
       }
     });
 
@@ -104,6 +111,7 @@ public class Panel extends JPanel {
     // que tiene las areas de texto y se ejecuta la funcion crearPanel. Se le asigna la posición en la ventana
 
 
+    crearPanel();
   }
 
   public void crearPanel() {
@@ -116,6 +124,7 @@ public class Panel extends JPanel {
     enumeraciones.add(new NumeroLinea(listaTexto.get(contadorPanel)));
     Utilidades.numerarLineas(numeracion, enumeraciones.get(contadorPanel), listaScroll.get(contadorPanel));
 
+
     listaManager.add(new UndoManager());
     listaTexto.get(contadorPanel).getDocument().addUndoableEditListener(listaManager.get(contadorPanel));
     ventana.add(listaScroll.get(contadorPanel), BorderLayout.CENTER); // se agrega el scroll (que ya tiene al area de texto dentro) a la ventana
@@ -125,7 +134,6 @@ public class Panel extends JPanel {
 
     listaTexto.get(contadorPanel).selectAll();
     Utilidades.cambiarApariencia("normal", listaTexto);
-
 
     contadorPanel++;
   }

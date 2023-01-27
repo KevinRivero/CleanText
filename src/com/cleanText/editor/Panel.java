@@ -2,8 +2,11 @@ package com.cleanText.editor;
 
 import jdk.jshell.execution.Util;
 
+import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.StyledEditorKit;
 import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -38,6 +41,14 @@ public class Panel extends JPanel {
   private JToolBar barraHerramientas;
   private URL url;
 
+
+  // variables para la barra inferior
+
+  private JPanel barraInferior;
+
+  // variables para la barra lateral derecha
+
+  private JPanel barraDerecha;
 
   // ---------------- Variables para archivos
   private ArrayList<File> listaArchivos;
@@ -97,14 +108,31 @@ public class Panel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         crearPanel();
-
-
       }
     });
 
+    // boton Negrita
+    url = Main.class.getResource("/com/cleanText/img/negrita.png");
+    Utilidades.crearBoton(url, barraHerramientas, "Negrita").addActionListener(new StyledEditorKit.BoldAction());
+
+    // boton cursiva
+    url = Main.class.getResource("/com/cleanText/img/cursiva.png");
+    Utilidades.crearBoton(url, barraHerramientas, "Cursiva").addActionListener(new StyledEditorKit.ItalicAction());
+
+    // boton subrayado
+    url = Main.class.getResource("/com/cleanText/img/subrayado.png");
+    Utilidades.crearBoton(url, barraHerramientas, "Subrayado").addActionListener(new StyledEditorKit.UnderlineAction());
 
     add(barraHerramientas, BorderLayout.WEST);
     //-------------------------
+
+    // Barra inferior
+    barraInferior = new JPanel();
+    add(barraInferior, BorderLayout.SOUTH);
+
+    // Barra lateral derecha
+    barraDerecha = new JPanel();
+    add(barraDerecha, BorderLayout.EAST);
 
     add(menu, BorderLayout.NORTH); // se le asigna la posicion en la ventana
     add(tPane, BorderLayout.CENTER); // se agrega al panel principal, que seria el que se crea con el constructor, el contenedor

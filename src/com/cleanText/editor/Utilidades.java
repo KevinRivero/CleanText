@@ -3,7 +3,6 @@ package com.cleanText.editor;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -65,7 +64,12 @@ public class Utilidades {
     ((Container) contenedor).add(boton);
     return boton;
 
-
   }
 
+  // Funcionalidades barra de herramientas
+  
+
 }
+
+
+

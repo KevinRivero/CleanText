@@ -38,8 +38,8 @@ public class Panel extends JPanel {
   // Variables para la barra de herramientas -------
   private JToolBar barraHerramientas;
   private URL url;
-  private JPopupMenu tamanioLetra;
-  private JTextField campoLetra;
+  private JMenu tamanioLetra;
+  // private JTextField campoLetra;
 
   // variables para la barra inferior
 
@@ -122,55 +122,6 @@ public class Panel extends JPanel {
     url = Main.class.getResource("/com/cleanText/img/subrayado.png");
     Utilidades.crearBoton(url, barraHerramientas, "Subrayado").addActionListener(new StyledEditorKit.UnderlineAction());
 
-    // Cambiar tamanio de letra
-    // Opciones
-    tamanioLetra = new JPopupMenu();
-    JMenuItem t8 = new JMenuItem("8");
-    JMenuItem t10 = new JMenuItem("10");
-    JMenuItem t12 = new JMenuItem("12");
-    JMenuItem t14 = new JMenuItem("14");
-    JMenuItem t16 = new JMenuItem("16");
-    JMenuItem t20 = new JMenuItem("20");
-    JMenuItem t24 = new JMenuItem("24");
-    JMenuItem t30 = new JMenuItem("30");
-
-    t8.addActionListener(new TamanioLetra(8));
-    t10.addActionListener(new TamanioLetra(10));
-    t12.addActionListener(new TamanioLetra(12));
-    t14.addActionListener(new TamanioLetra(14));
-    t16.addActionListener(new TamanioLetra(16));
-    t20.addActionListener(new TamanioLetra(20));
-    t24.addActionListener(new TamanioLetra(24));
-    t30.addActionListener(new TamanioLetra(30));
-    tamanioLetra.add(t8);
-    tamanioLetra.add(t10);
-    tamanioLetra.add(t12);
-    tamanioLetra.add(t14);
-    tamanioLetra.add(t16);
-    tamanioLetra.add(t20);
-    tamanioLetra.add(t24);
-    tamanioLetra.add(t30);
-    barraHerramientas.add(tamanioLetra);
-    // Campo para que el usuario pueda tipear el tamanio de letra deseada
-    campoLetra = new JTextField(3);
-    campoLetra.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        try {
-          int tamanio = Integer.parseInt(campoLetra.getText());
-          if (tamanio >= 8) {
-            setTamanio(tamanio);
-          } else {
-            JOptionPane.showMessageDialog(null, "Tamaño de letra inválido");
-          }
-        } catch (NumberFormatException ex) {
-          JOptionPane.showMessageDialog(null, "Ingresa un número");
-        }
-      }
-    });
-    campoLetra.setPreferredSize(new Dimension(10, 10));
-    campoLetra.setComponentPopupMenu(tamanioLetra);
-    barraHerramientas.add(campoLetra);
 
     add(barraHerramientas, BorderLayout.WEST);
 
@@ -458,35 +409,6 @@ public class Panel extends JPanel {
     }
   }
 
-  private class TamanioLetra implements ActionListener {
-    private int tamanio;
-
-    public TamanioLetra(int tamanio) {
-      this.tamanio = tamanio;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      setTamanio(tamanio);
-    }
-
-  }
-
-  private void setTamanio(int tamanio) {
-    int indice = tPane.getSelectedIndex();
-    // Tomo los atributos de estilo del area de texto seleccionada
-    StyledDocument doc = listaTexto.get(indice).getStyledDocument();
-    Element elemento = doc.getCharacterElement(listaTexto.get(indice).getSelectionStart());
-    AttributeSet atributos = elemento.getAttributes();
-
-    // reemplazo unicamente el atributo de tamanio de letra
-    MutableAttributeSet nuevosAtributos = new SimpleAttributeSet(atributos);
-    StyleConstants.setFontSize(nuevosAtributos, tamanio);
-
-    // aplico los cambios a los atributos del documento
-    doc.setCharacterAttributes(listaTexto.get(indice).getSelectionStart(), listaTexto.get(indice).getSelectionEnd() - listaTexto.get(indice).getSelectionStart(), nuevosAtributos, false);
-
-  }
 
 }
 

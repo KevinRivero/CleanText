@@ -62,12 +62,11 @@ public class Utilidades {
     JButton boton = new JButton(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
     boton.setToolTipText(rotulo);
     ((Container) contenedor).add(boton);
+    boton.setBorderPainted(false);
     return boton;
 
   }
 
-  // Funcionalidades barra de herramientas
-  
 
 }
 

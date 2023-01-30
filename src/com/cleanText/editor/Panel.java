@@ -110,6 +110,63 @@ public class Panel extends JPanel {
       }
     });
 
+    //boton cerrar pestania
+    url = Main.class.getResource("/com/cleanText/img/cerrar.png");
+    Utilidades.crearBoton(url, barraHerramientas, "Cerrar pestaña").addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        listaManager.remove(tPane.getTabCount() - 1);
+        listaTexto.remove(tPane.getTabCount() - 1);
+        listaScroll.remove(tPane.getTabCount() - 1);
+        listaArchivos.remove(tPane.getTabCount() - 1);
+        tPane.remove(tPane.getTabCount() - 1);
+        contadorPanel--;
+      }
+    });
+
+    // boton guardar
+    url = Main.class.getResource("/com/cleanText/img/guardar.png");
+    Utilidades.crearBoton(url, barraHerramientas, "Guardar").addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if (listaArchivos.get(tPane.getSelectedIndex()).getPath().equals("")) {
+          JFileChooser guardarArchivo = new JFileChooser();
+          int opcion = guardarArchivo.showOpenDialog(null);
+          if (opcion == JFileChooser.APPROVE_OPTION) {
+            File archivo = guardarArchivo.getSelectedFile();
+            listaArchivos.set(tPane.getSelectedIndex(), archivo);
+            tPane.setTitleAt(tPane.getSelectedIndex(), archivo.getName());
+            try {
+              FileWriter fw = new FileWriter(listaArchivos.get(tPane.getSelectedIndex()).getPath());
+              String texto = listaTexto.get(tPane.getSelectedIndex()).getText();
+              for (int i = 0; i < texto.length(); i++) {
+                fw.write(texto.charAt(i));
+              }
+              fw.close();
+
+
+            } catch (IOException ex) {
+              throw new RuntimeException(ex);
+            }
+
+          }
+        } else {
+          try {
+            FileWriter fw = new FileWriter(listaArchivos.get(tPane.getSelectedIndex()).getPath());
+            String texto = listaTexto.get(tPane.getSelectedIndex()).getText();
+            for (int i = 0; i < texto.length(); i++) {
+              fw.write(texto.charAt(i));
+            }
+            fw.close();
+
+
+          } catch (IOException ex) {
+            throw new RuntimeException(ex);
+          }
+        }
+      }
+    });
+
     // boton Negrita
     url = Main.class.getResource("/com/cleanText/img/negrita.png");
     Utilidades.crearBoton(url, barraHerramientas, "Negrita").addActionListener(new StyledEditorKit.BoldAction());
@@ -121,6 +178,10 @@ public class Panel extends JPanel {
     // boton subrayado
     url = Main.class.getResource("/com/cleanText/img/subrayado.png");
     Utilidades.crearBoton(url, barraHerramientas, "Subrayado").addActionListener(new StyledEditorKit.UnderlineAction());
+
+    //boton color de texto
+    url = Main.class.getResource("/com/cleanText/img/color.png");
+    Utilidades.crearBoton(url, barraHerramientas, "Color de texto");
 
 
     add(barraHerramientas, BorderLayout.WEST);
@@ -242,8 +303,6 @@ public class Panel extends JPanel {
                 listaScroll.remove(tPane.getTabCount() - 1);
                 listaArchivos.remove(tPane.getTabCount() - 1);
                 tPane.remove(tPane.getTabCount() - 1);
-
-
                 contadorPanel--;
               }
             }
